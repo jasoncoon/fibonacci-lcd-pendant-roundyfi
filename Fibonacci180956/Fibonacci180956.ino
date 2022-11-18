@@ -1,94 +1,49 @@
+// based on https://github.com/Xinyuan-LilyGO/T-RGB/tree/main/example/GFX
+
+#include <Arduino.h>
+#include <Arduino_GFX_Library.h> /* https://github.com/moononournation/Arduino_GFX.git */
+#include <FastLED.h>
 #include "Wire.h"
 #include "XL9535_driver.h"
 #include "pin_config.h"
-#include <Arduino.h>
-#include <Arduino_GFX_Library.h> /* https://github.com/moononournation/Arduino_GFX.git */
+#include "lcd.h"
 
-Arduino_ESP32RGBPanel *bus = new Arduino_ESP32RGBPanel(
-    -1, -1, -1, EXAMPLE_PIN_NUM_DE, EXAMPLE_PIN_NUM_VSYNC, EXAMPLE_PIN_NUM_HSYNC, EXAMPLE_PIN_NUM_PCLK,
-    EXAMPLE_PIN_NUM_DATA1, EXAMPLE_PIN_NUM_DATA2, EXAMPLE_PIN_NUM_DATA3, EXAMPLE_PIN_NUM_DATA4, EXAMPLE_PIN_NUM_DATA5,
-    EXAMPLE_PIN_NUM_DATA6, EXAMPLE_PIN_NUM_DATA7, EXAMPLE_PIN_NUM_DATA8, EXAMPLE_PIN_NUM_DATA9, EXAMPLE_PIN_NUM_DATA10, EXAMPLE_PIN_NUM_DATA11, 
-    EXAMPLE_PIN_NUM_DATA13, EXAMPLE_PIN_NUM_DATA14, EXAMPLE_PIN_NUM_DATA15, EXAMPLE_PIN_NUM_DATA16, EXAMPLE_PIN_NUM_DATA17);
-Arduino_GFX *gfx = new Arduino_ST7701_RGBPanel(bus, GFX_NOT_DEFINED, 0 /* rotation */, false /* IPS */, 480, 480,
-                                               st7701_type2_init_operations, sizeof(st7701_type2_init_operations), true,
-                                               50, 1, 30, 20, 1, 30);
+#define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
-typedef struct {
-  uint8_t cmd;
-  uint8_t data[16];
-  uint8_t databytes; // No of data in data; bit 7 = delay after set; 0xFF = end of cmds.
-} lcd_init_cmd_t;
+const uint16_t width = EXAMPLE_LCD_H_RES;
+const uint16_t height = EXAMPLE_LCD_V_RES;
 
-DRAM_ATTR static const lcd_init_cmd_t st_init_cmds[] = {
-    {0xFF, {0x77, 0x01, 0x00, 0x00, 0x10}, 0x05},
-    {0xC0, {0x3b, 0x00}, 0x02},
-    {0xC1, {0x0b, 0x02}, 0x02},
-    {0xC2, {0x07, 0x02}, 0x02},
-    {0xCC, {0x10}, 0x01},
-    {0xCD, {0x08}, 0x01}, // 用565时屏蔽    666打开
-    {0xb0, {0x00, 0x11, 0x16, 0x0e, 0x11, 0x06, 0x05, 0x09, 0x08, 0x21, 0x06, 0x13, 0x10, 0x29, 0x31, 0x18}, 0x10},
-    {0xb1, {0x00, 0x11, 0x16, 0x0e, 0x11, 0x07, 0x05, 0x09, 0x09, 0x21, 0x05, 0x13, 0x11, 0x2a, 0x31, 0x18}, 0x10},
-    {0xFF, {0x77, 0x01, 0x00, 0x00, 0x11}, 0x05},
-    {0xb0, {0x6d}, 0x01},
-    {0xb1, {0x37}, 0x01},
-    {0xb2, {0x81}, 0x01},
-    {0xb3, {0x80}, 0x01},
-    {0xb5, {0x43}, 0x01},
-    {0xb7, {0x85}, 0x01},
-    {0xb8, {0x20}, 0x01},
-    {0xc1, {0x78}, 0x01},
-    {0xc2, {0x78}, 0x01},
-    {0xc3, {0x8c}, 0x01},
-    {0xd0, {0x88}, 0x01},
-    {0xe0, {0x00, 0x00, 0x02}, 0x03},
-    {0xe1, {0x03, 0xa0, 0x00, 0x00, 0x04, 0xa0, 0x00, 0x00, 0x00, 0x20, 0x20}, 0x0b},
-    {0xe2, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x0d},
-    {0xe3, {0x00, 0x00, 0x11, 0x00}, 0x04},
-    {0xe4, {0x22, 0x00}, 0x02},
-    {0xe5, {0x05, 0xec, 0xa0, 0xa0, 0x07, 0xee, 0xa0, 0xa0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x10},
-    {0xe6, {0x00, 0x00, 0x11, 0x00}, 0x04},
-    {0xe7, {0x22, 0x00}, 0x02},
-    {0xe8, {0x06, 0xed, 0xa0, 0xa0, 0x08, 0xef, 0xa0, 0xa0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0x10},
-    {0xeb, {0x00, 0x00, 0x40, 0x40, 0x00, 0x00, 0x00}, 0x07},
-    {0xed, {0xff, 0xff, 0xff, 0xba, 0x0a, 0xbf, 0x45, 0xff, 0xff, 0x54, 0xfb, 0xa0, 0xab, 0xff, 0xff, 0xff}, 0x10},
-    {0xef, {0x10, 0x0d, 0x04, 0x08, 0x3f, 0x1f}, 0x06},
-    {0xFF, {0x77, 0x01, 0x00, 0x00, 0x13}, 0x05},
-    {0xef, {0x08}, 0x01},
-    {0xFF, {0x77, 0x01, 0x00, 0x00, 0x00}, 0x05},
-    {0x36, {0x08}, 0x01},
-    {0x3a, {0x66}, 0x01},
-    {0x11, {0x00}, 0x80},
-    // {0xFF, {0x77, 0x01, 0x00, 0x00, 0x12}, 0x05},
-    // {0xd1, {0x81}, 0x01},
-    // {0xd2, {0x06}, 0x01},
-    {0x29, {0x00}, 0x80},
-    {0, {0}, 0xff}};
+const uint16_t NUM_LEDS = 512;
+const uint16_t ledRadius = 4;
 
-XL9535 xl;
-void tft_init(void);
-void lcd_cmd(const uint8_t cmd);
-void lcd_data(const uint8_t *data, int len);
+CRGB leds[NUM_LEDS];
 
-void scan_iic(void) {
-  byte error, address;
-  int nDevices = 0;
-  Serial.println("Scanning for I2C devices ...");
-  for (address = 0x01; address < 0x7f; address++) {
-    Wire.beginTransmission(address);
-    error = Wire.endTransmission();
-    if (error == 0) {
-      Serial.printf("I2C device found at address 0x%02X\n", address);
-      nDevices++;
-    } else if (error != 2) {
-      Serial.printf("Error %d at address 0x%02X\n", error, address);
-    }
-  }
-  if (nDevices == 0) {
-    Serial.println("No I2C devices found");
-  }
-}
+// pre-compute the XY coordinates of each "LED"
+uint16_t coordsXf[NUM_LEDS] = {};
+uint16_t coordsYf[NUM_LEDS] = {};
 
-void print_chip_info(void) {
+// one byte coordinates of each "LED"
+uint8_t coordsX[NUM_LEDS] = {};
+uint8_t coordsY[NUM_LEDS] = {};
+uint8_t angles[NUM_LEDS] = {};
+uint8_t radii[NUM_LEDS] = {};
+
+uint8_t gHue = 0;
+
+uint8_t speed = 30;
+
+uint8_t currentPaletteIndex = 0;
+uint8_t secondsPerPalette = 10;
+
+uint8_t currentPatternIndex = 0;
+
+uint8_t autoplay = 1;
+
+uint8_t autoplayDuration = 10;
+unsigned long autoPlayTimeout = 0;
+
+void print_chip_info(void)
+{
   Serial.print("Chip: ");
   Serial.println(ESP.getChipModel());
   Serial.print("ChipRevision: ");
@@ -104,92 +59,225 @@ void print_chip_info(void) {
   Serial.println("MHz");
 }
 
-void setup() {
-  // put your setup code here, to run once:
+void setup()
+{
+  Serial.begin(115200);
+
   pinMode(BAT_VOLT_PIN, ANALOG);
 
-  Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN, (uint32_t)800000);
-  Serial.begin(115200);
-  xl.begin();
-  uint8_t pin = (1 << PWR_EN_PIN) | (1 << LCD_CS_PIN) | (1 << TP_RES_PIN) | (1 << LCD_SDA_PIN) | (1 << LCD_CLK_PIN) |
-                (1 << LCD_RST_PIN) | (1 << SD_CS_PIN);
-
-  xl.pinMode8(0, pin, OUTPUT);
-  xl.digitalWrite(PWR_EN_PIN, 1);
   print_chip_info();
-  pinMode(EXAMPLE_PIN_NUM_BK_LIGHT, OUTPUT);
-  digitalWrite(EXAMPLE_PIN_NUM_BK_LIGHT, EXAMPLE_LCD_BK_LIGHT_ON_LEVEL);
 
-  gfx->begin();
-  tft_init();
+  setupLcd();
 
-  // gfx->draw16bitRGBBitmap(0, 0, (uint16_t *)logo_img, 480, 480);
-  // delay(5000);
-  // gfx->draw16bitRGBBitmap(0, 0, (uint16_t *)gImage_img2, 480, 480);
+  gfx->fillRect(0, 0, width, height, gfx->color565(0, 0, 0));
+
+  setupCoords();
+
+  autoPlayTimeout = millis() + (autoplayDuration * 1000);
 }
 
-void loop() {
-  gfx->drawPixel(random(479), random(479), gfx->color565(random(255), random(255), random(255)));
-}
+void setupCoords()
+{
+  // pre-compute a bunch of constants
+  const float center = width / 2;
+  const float radius = 0.98 * center;
+  const float phi = (sqrt(5) + 1) / 2 - 1;
+  const float goldenAngle = -phi * 2 * PI;
 
-void lcd_send_data(uint8_t data) {
-  uint8_t n;
-  for (n = 0; n < 8; n++) {
-    if (data & 0x80)
-      xl.digitalWrite(LCD_SDA_PIN, 1);
-    else
-      xl.digitalWrite(LCD_SDA_PIN, 0);
+  const float maxArea = pow(radius, 2) * PI;
+  // const float maxRadius = sqrt(maxArea / PI);
+  const float circleArea = maxArea / NUM_LEDS;
+  // const float circleRadius = sqrt(circleArea / PI);
 
-    data <<= 1;
-    xl.digitalWrite(LCD_CLK_PIN, 0);
-    xl.digitalWrite(LCD_CLK_PIN, 1);
+  uint8_t minX, maxX, minY, maxY, minA, maxA, minR, maxR;
+  float minXf, maxXf, minYf, maxYf, minAf, maxAf, minRf, maxRf;
+
+  Serial.println("xf, yf, af, rf, x, y, a, r");
+
+  for (uint16_t i = 0; i < NUM_LEDS; i++)
+  {
+    float af = abs(fmod(i * goldenAngle, PI * 2));
+    float rf = sqrt((circleArea * (i + 0.5)) / PI);
+    float xf = center + cos(af) * rf;
+    float yf = center + sin(af) * rf;
+
+    minXf = min(minXf, xf);
+    minYf = min(minYf, yf);
+    minAf = min(minAf, af);
+    minRf = min(minRf, rf);
+
+    maxXf = max(maxXf, xf);
+    maxYf = max(maxYf, yf);
+    maxAf = max(maxAf, af);
+    maxRf = max(maxRf, rf);
+
+    coordsXf[i] = xf;
+    coordsYf[i] = yf;
+
+    uint8_t x = (uint8_t)((xf / 480.0) * 255.0);
+    uint8_t y = (uint8_t)((yf / 480.0) * 255.0);
+    uint8_t a = (uint8_t)((af / (PI * 2)) * 255.0);
+    uint8_t r = (uint8_t)((rf / 240.0) * 255.0);
+
+    coordsX[i] = x;
+    coordsY[i] = y;
+    angles[i] = a;
+    radii[i] = r;
+
+    minX = min(minX, x);
+    minY = min(minY, y);
+    minA = min(minA, a);
+    minR = min(minR, r);
+
+    maxX = max(maxX, x);
+    maxY = max(maxY, y);
+    maxA = max(maxA, a);
+    maxR = max(maxR, r);
+
+    Serial.printf("%f, %f, %f, %f, %u, %u, %u, %u\n", xf, yf, af, rf, x, y, a, r);
   }
+
+  Serial.printf("%f, %f, %f, %f, %u, %u, %u, %u\n", minXf, minYf, minAf, minRf, minX, minY, minA, minR);
+  Serial.printf("%f, %f, %f, %f, %u, %u, %u, %u\n", maxXf, maxYf, maxAf, maxRf, maxX, maxY, maxA, maxR);
 }
 
-void lcd_cmd(const uint8_t cmd) {
-  xl.digitalWrite(LCD_CS_PIN, 0);
-  xl.digitalWrite(LCD_SDA_PIN, 0);
-  xl.digitalWrite(LCD_CLK_PIN, 0);
-  xl.digitalWrite(LCD_CLK_PIN, 1);
-  lcd_send_data(cmd);
-  xl.digitalWrite(LCD_CS_PIN, 1);
-}
-
-void lcd_data(const uint8_t *data, int len) {
-  uint32_t i = 0;
-  if (len == 0)
-    return; // no need to send anything
-  do {
-    xl.digitalWrite(LCD_CS_PIN, 0);
-    xl.digitalWrite(LCD_SDA_PIN, 1);
-    xl.digitalWrite(LCD_CLK_PIN, 0);
-    xl.digitalWrite(LCD_CLK_PIN, 1);
-    lcd_send_data(*(data + i));
-    xl.digitalWrite(LCD_CS_PIN, 1);
-    i++;
-  } while (len--);
-}
-
-void tft_init(void) {
-  xl.digitalWrite(LCD_CS_PIN, 1);
-  xl.digitalWrite(LCD_SDA_PIN, 1);
-  xl.digitalWrite(LCD_CLK_PIN, 1);
-
-  // Reset the display
-  xl.digitalWrite(LCD_RST_PIN, 1);
-  vTaskDelay(200 / portTICK_PERIOD_MS);
-  xl.digitalWrite(LCD_RST_PIN, 0);
-  vTaskDelay(200 / portTICK_PERIOD_MS);
-  xl.digitalWrite(LCD_RST_PIN, 1);
-  vTaskDelay(200 / portTICK_PERIOD_MS);
-  int cmd = 0;
-  while (st_init_cmds[cmd].databytes != 0xff) {
-    lcd_cmd(st_init_cmds[cmd].cmd);
-    lcd_data(st_init_cmds[cmd].data, st_init_cmds[cmd].databytes & 0x1F);
-    if (st_init_cmds[cmd].databytes & 0x80) {
-      vTaskDelay(100 / portTICK_PERIOD_MS);
+// given an angle and radius (and delta for both), set pixels that fall inside that range,
+// fading the color from full-color at center, to off (black) at the outer edges.
+void antialiasPixelAR(uint8_t angle, uint8_t dAngle, uint8_t startRadius, uint8_t endRadius, CRGB color, CRGB leds[], int _NUM_LEDS)
+{
+  for (uint16_t i = 0; i < _NUM_LEDS; i++)
+  {
+    uint8_t ro = radii[i];
+    // only mess with the pixel when it's radius is within the target radius
+    if (ro <= endRadius && ro >= startRadius)
+    {
+      // Get pixel's angle (unit256)
+      uint8_t ao = angles[i];
+      // set adiff to abs(ao - angle) ... relies on unsigned underflow resulting in larger value
+      uint8_t adiff = min(sub8(ao, angle), sub8(angle, ao));
+      // only mess with the pixel when it's angle is within range of target
+      if (adiff <= dAngle)
+      {
+        // map the intensity of the color so it fades to black at edge of allowed angle
+        uint8_t fade = map(adiff, 0, dAngle, 0, 255);
+        CRGB faded = color;
+        // fade the target color based on how far the angle was from the target
+        faded.fadeToBlackBy(fade);
+        // add the faded color (as an overlay) to existing colors
+        leds[i] += faded;
+      }
     }
-    cmd++;
   }
-  Serial.println("Register setup complete");
+}
+
+#include "gradientPalettes.h"
+
+CRGBPalette16 currentPalette(CRGB::Black);
+CRGBPalette16 targetPalette(gradientPalettes[0]);
+
+#include "colorWaves.h"
+#include "emitter.h"
+#include "fire.h"
+#include "noise.h"
+#include "pride.h"
+#include "stars.h"
+#include "swirl.h"
+#include "water.h"
+
+typedef void (*Pattern)();
+typedef Pattern PatternList[];
+typedef struct
+{
+  Pattern pattern;
+  String name;
+} PatternAndName;
+typedef PatternAndName PatternAndNameList[];
+
+PatternAndNameList patterns = {
+    {colorWaves, "Color Waves"},
+    {pride, "Pride"},
+
+    {paletteNoise, "Noise"},
+    {polarNoise, "Polar Noise"},
+
+    {fire, "Fire"},
+    {water, "Water"},
+
+    {firePalette, "Palette Fire"},
+    {waterPalette, "Palette Water"},
+
+    {stars, "Stars"},
+    {emitter, "Emitter"},
+
+    {swirl, "Swirl"},
+};
+
+const uint8_t patternCount = ARRAY_SIZE(patterns);
+
+// increase or decrease the current pattern number, and wrap around at the ends
+void adjustPattern(bool up)
+{
+  if (up)
+    currentPatternIndex++;
+  else
+    currentPatternIndex--;
+
+  // wrap around at the ends
+  if (currentPatternIndex < 0)
+    currentPatternIndex = patternCount - 1;
+  if (currentPatternIndex >= patternCount)
+    currentPatternIndex = 0;
+
+  // if (autoplay == 0)
+  // {
+  //   EEPROM.write(1, currentPatternIndex);
+  //   EEPROM.commit();
+  // }
+
+  // broadcastInt("pattern", currentPatternIndex);
+}
+
+void loop()
+{
+  // unsigned long start = millis();
+
+  // change to a new cpt-city gradient palette
+  EVERY_N_SECONDS(secondsPerPalette)
+  {
+    currentPaletteIndex = addmod8(currentPaletteIndex, 1, gradientPaletteCount);
+    targetPalette = gradientPalettes[currentPaletteIndex];
+  }
+
+  EVERY_N_MILLISECONDS(40)
+  {
+    // slowly blend the current palette to the next
+    nblendPaletteTowardPalette(currentPalette, targetPalette, 8);
+    gHue++; // slowly cycle the "base color" through the rainbow
+  }
+
+  if (autoplay && (millis() > autoPlayTimeout))
+  {
+    adjustPattern(true);
+    autoPlayTimeout = millis() + (autoplayDuration * 1000);
+  }
+
+  // Call the current pattern function once, updating the display
+  patterns[currentPatternIndex].pattern();
+
+  for (uint16_t i = 0; i < NUM_LEDS; i++)
+  {
+    CRGB color = leds[i];
+
+    uint16_t x = coordsXf[i];
+    uint16_t y = coordsYf[i];
+    uint8_t r = color.r;
+    uint8_t g = color.g;
+    uint8_t b = color.b;
+
+    uint16_t c = gfx->color565(r, g, b);
+
+    gfx->fillCircle(x, y, ledRadius, c);
+  }
+
+  // Serial.println(millis() - start);
 }
