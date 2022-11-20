@@ -68,7 +68,7 @@ void setupWeb()
 
   // automatically connect using saved credentials if they exist
   // If connection fails it starts an access point with the specified name
-  if (wifiManager.autoConnect("Fibonacci512 Pendant"))
+  if (wifiManager.autoConnect("Fibonacci LCD Pendant"))
   {
     // Serial.println("Wi-Fi connected");
   }
@@ -104,7 +104,7 @@ void setupWeb()
   webServer.serveStatic("/js/app.js", SPIFFS, "/js/app.js", "max-age=86400");
   webServer.serveStatic("/images/atom196.png", SPIFFS, "/images/atom196.png", "max-age=86400");
 
-  MDNS.begin("fibonacci1024");
+  MDNS.begin("fibonacciLcdPendant");
 
   httpUpdateServer.setup(&webServer);
   webServer.begin();
