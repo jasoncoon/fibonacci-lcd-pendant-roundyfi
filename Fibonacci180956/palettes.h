@@ -475,7 +475,7 @@ DEFINE_GRADIENT_PALETTE(Blue_Cyan_Yellow_gp){
 //
 // This list of color palettes acts as a "playlist"; you can
 // add or delete, or re-arrange as you wish.
-const TProgmemRGBGradientPalettePtr gradientPalettes[] = {
+const TProgmemRGBGradientPalettePtr palettes[] = {
     Sunset_Real_gp,
     es_rivendell_15_gp,
     es_ocean_breeze_036_gp,
@@ -499,7 +499,6 @@ const TProgmemRGBGradientPalettePtr gradientPalettes[] = {
     ib15_gp,
     Fuschia_7_gp,
     es_emerald_dragon_08_gp,
-    lava_gp,
     fire_gp,
     Colorfull_gp,
     Magenta_Evening_gp,
@@ -511,6 +510,44 @@ const TProgmemRGBGradientPalettePtr gradientPalettes[] = {
     Blue_Cyan_Yellow_gp};
 
 // Count of how many cpt-city gradients are defined:
-const uint8_t gradientPaletteCount = ARRAY_SIZE(gradientPalettes);
+const uint8_t paletteCount = ARRAY_SIZE(palettes);
 
 CRGBPalette16 IceColors_p = CRGBPalette16(CRGB::Black, CRGB::Blue, CRGB::Aqua, CRGB::White);
+
+const String paletteNames[paletteCount] = {
+    "Sunset Real",
+    "es rivendell 15",
+    "es ocean breeze 036",
+    "rgi 15",
+    "retro2 16",
+    "Analogous 1",
+    "es pinksplash 08",
+    "Coral reef",
+    "es ocean breeze 068",
+    "es pinksplash 07",
+    "es vintage 01",
+    "departure",
+    "es landscape 64",
+    "es landscape 33",
+    "rainbowsherbet",
+    "gr65 hult",
+    "gr64 hult",
+    "GMT drywet",
+    "ib jul01",
+    "es vintage 57",
+    "ib15",
+    "Fuschia-7",
+    "es emerald dragon 08",
+    "fire",
+    "Colorfull",
+    "Magenta Evening",
+    "Pink Purple",
+    "es autumn 19",
+    "Black Blue Magenta White",
+    "Black Magenta Red",
+    "Black Red Magenta Yellow",
+    "Blue Cyan Yellow",
+};
+
+CRGBPalette16 currentPalette(CRGB::Black);
+CRGBPalette16 targetPalette(palettes[0]);

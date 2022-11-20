@@ -3,10 +3,23 @@
 #include <Arduino.h>
 #include <Arduino_GFX_Library.h> /* https://github.com/moononournation/Arduino_GFX.git */
 #include <FastLED.h>
-#include "Wire.h"
+#include <WiFi.h>
+#include <WebServer.h>
+#include <FS.h>
+#include <SPIFFS.h>
+#include <EEPROM.h>
+#include <HTTPUpdateServer.h>
+#include <WiFiManager.h> //https://github.com/tzapu/WiFiManager
+#include <ESPmDNS.h>
+#include <Wire.h>
+
 #include "XL9535_driver.h"
 #include "pin_config.h"
 #include "lcd.h"
+
+WebServer webServer(80);
+HTTPUpdateServer httpUpdateServer;
+WiFiManager wifiManager;
 
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
@@ -30,10 +43,15 @@ uint8_t radii[NUM_LEDS] = {};
 
 uint8_t gHue = 0;
 
+uint8_t power = 1;
+uint8_t brightness = 8;
+
 uint8_t speed = 30;
 
+uint8_t cyclePalettes = 0;
+uint8_t paletteDuration = 10;
 uint8_t currentPaletteIndex = 0;
-uint8_t secondsPerPalette = 10;
+unsigned long paletteTimeout = 0;
 
 uint8_t currentPatternIndex = 0;
 
@@ -44,32 +62,86 @@ unsigned long autoPlayTimeout = 0;
 
 void print_chip_info(void)
 {
-  Serial.print("Chip: ");
-  Serial.println(ESP.getChipModel());
-  Serial.print("ChipRevision: ");
-  Serial.println(ESP.getChipRevision());
-  Serial.print("Psram size: ");
-  Serial.print(ESP.getPsramSize() / 1024);
-  Serial.println("KB");
-  Serial.print("Flash size: ");
-  Serial.print(ESP.getFlashChipSize() / 1024);
-  Serial.println("KB");
-  Serial.print("CPU frequency: ");
-  Serial.print(ESP.getCpuFreqMHz());
-  Serial.println("MHz");
+  // Serial.print("Chip: ");
+  // Serial.println(ESP.getChipModel());
+  // Serial.print("ChipRevision: ");
+  // Serial.println(ESP.getChipRevision());
+  // Serial.print("Psram size: ");
+  // Serial.print(ESP.getPsramSize() / 1024);
+  // Serial.println("KB");
+  // Serial.print("Flash size: ");
+  // Serial.print(ESP.getFlashChipSize() / 1024);
+  // Serial.println("KB");
+  // Serial.print("CPU frequency: ");
+  // Serial.print(ESP.getCpuFreqMHz());
+  // Serial.println("MHz");
 }
+
+void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
+{
+  // Serial.printf("Listing directory: %s\n", dirname);
+
+  File root = fs.open(dirname);
+  if (!root)
+  {
+    // Serial.println("Failed to open directory");
+    return;
+  }
+  if (!root.isDirectory())
+  {
+    // Serial.println("Not a directory");
+    return;
+  }
+
+  File file = root.openNextFile();
+  while (file)
+  {
+    if (file.isDirectory())
+    {
+      // Serial.print("  DIR : ");
+      // Serial.println(file.name());
+      if (levels)
+      {
+        listDir(fs, file.name(), levels - 1);
+      }
+    }
+    else
+    {
+      // Serial.print("  FILE: ");
+      // Serial.print(file.name());
+      // Serial.print("  SIZE: ");
+      // Serial.println(file.size());
+    }
+    file = root.openNextFile();
+  }
+}
+
+#include "palettes.h"
+#include "patterns.h"
+
+#include "field.h"
+#include "fields.h"
+
+#include "web.h"
 
 void setup()
 {
-  Serial.begin(115200);
+  // Serial.begin(115200);
 
   pinMode(BAT_VOLT_PIN, ANALOG);
 
-  print_chip_info();
+  // print_chip_info();
 
   setupLcd();
 
   gfx->fillRect(0, 0, width, height, gfx->color565(0, 0, 0));
+
+  SPIFFS.begin();
+  // listDir(SPIFFS, "/", 1);
+
+  loadFieldsFromEEPROM(fields, fieldCount);
+
+  setupWeb();
 
   setupCoords();
 
@@ -92,7 +164,7 @@ void setupCoords()
   uint8_t minX, maxX, minY, maxY, minA, maxA, minR, maxR;
   float minXf, maxXf, minYf, maxYf, minAf, maxAf, minRf, maxRf;
 
-  Serial.println("xf, yf, af, rf, x, y, a, r");
+  // Serial.println("xf, yf, af, rf, x, y, a, r");
 
   for (uint16_t i = 0; i < NUM_LEDS; i++)
   {
@@ -134,118 +206,22 @@ void setupCoords()
     maxA = max(maxA, a);
     maxR = max(maxR, r);
 
-    Serial.printf("%f, %f, %f, %f, %u, %u, %u, %u\n", xf, yf, af, rf, x, y, a, r);
+    // Serial.printf("%f, %f, %f, %f, %u, %u, %u, %u\n", xf, yf, af, rf, x, y, a, r);
   }
 
-  Serial.printf("%f, %f, %f, %f, %u, %u, %u, %u\n", minXf, minYf, minAf, minRf, minX, minY, minA, minR);
-  Serial.printf("%f, %f, %f, %f, %u, %u, %u, %u\n", maxXf, maxYf, maxAf, maxRf, maxX, maxY, maxA, maxR);
-}
-
-// given an angle and radius (and delta for both), set pixels that fall inside that range,
-// fading the color from full-color at center, to off (black) at the outer edges.
-void antialiasPixelAR(uint8_t angle, uint8_t dAngle, uint8_t startRadius, uint8_t endRadius, CRGB color, CRGB leds[], int _NUM_LEDS)
-{
-  for (uint16_t i = 0; i < _NUM_LEDS; i++)
-  {
-    uint8_t ro = radii[i];
-    // only mess with the pixel when it's radius is within the target radius
-    if (ro <= endRadius && ro >= startRadius)
-    {
-      // Get pixel's angle (unit256)
-      uint8_t ao = angles[i];
-      // set adiff to abs(ao - angle) ... relies on unsigned underflow resulting in larger value
-      uint8_t adiff = min(sub8(ao, angle), sub8(angle, ao));
-      // only mess with the pixel when it's angle is within range of target
-      if (adiff <= dAngle)
-      {
-        // map the intensity of the color so it fades to black at edge of allowed angle
-        uint8_t fade = map(adiff, 0, dAngle, 0, 255);
-        CRGB faded = color;
-        // fade the target color based on how far the angle was from the target
-        faded.fadeToBlackBy(fade);
-        // add the faded color (as an overlay) to existing colors
-        leds[i] += faded;
-      }
-    }
-  }
-}
-
-#include "gradientPalettes.h"
-
-CRGBPalette16 currentPalette(CRGB::Black);
-CRGBPalette16 targetPalette(gradientPalettes[0]);
-
-#include "colorWaves.h"
-#include "emitter.h"
-#include "fire.h"
-#include "noise.h"
-#include "pride.h"
-#include "stars.h"
-#include "swirl.h"
-#include "water.h"
-
-typedef void (*Pattern)();
-typedef Pattern PatternList[];
-typedef struct
-{
-  Pattern pattern;
-  String name;
-} PatternAndName;
-typedef PatternAndName PatternAndNameList[];
-
-PatternAndNameList patterns = {
-    {colorWaves, "Color Waves"},
-    {pride, "Pride"},
-
-    {paletteNoise, "Noise"},
-    {polarNoise, "Polar Noise"},
-
-    {fire, "Fire"},
-    {water, "Water"},
-
-    {firePalette, "Palette Fire"},
-    {waterPalette, "Palette Water"},
-
-    {stars, "Stars"},
-    {emitter, "Emitter"},
-
-    {swirl, "Swirl"},
-};
-
-const uint8_t patternCount = ARRAY_SIZE(patterns);
-
-// increase or decrease the current pattern number, and wrap around at the ends
-void adjustPattern(bool up)
-{
-  if (up)
-    currentPatternIndex++;
-  else
-    currentPatternIndex--;
-
-  // wrap around at the ends
-  if (currentPatternIndex < 0)
-    currentPatternIndex = patternCount - 1;
-  if (currentPatternIndex >= patternCount)
-    currentPatternIndex = 0;
-
-  // if (autoplay == 0)
-  // {
-  //   EEPROM.write(1, currentPatternIndex);
-  //   EEPROM.commit();
-  // }
-
-  // broadcastInt("pattern", currentPatternIndex);
+  // Serial.printf("%f, %f, %f, %f, %u, %u, %u, %u\n", minXf, minYf, minAf, minRf, minX, minY, minA, minR);
+  // Serial.printf("%f, %f, %f, %f, %u, %u, %u, %u\n", maxXf, maxYf, maxAf, maxRf, maxX, maxY, maxA, maxR);
 }
 
 void loop()
 {
   // unsigned long start = millis();
+  handleWeb();
 
-  // change to a new cpt-city gradient palette
-  EVERY_N_SECONDS(secondsPerPalette)
+  if (cyclePalettes == 1 && (millis() > paletteTimeout))
   {
-    currentPaletteIndex = addmod8(currentPaletteIndex, 1, gradientPaletteCount);
-    targetPalette = gradientPalettes[currentPaletteIndex];
+    nextPalette();
+    paletteTimeout = millis() + (paletteDuration * 1000);
   }
 
   EVERY_N_MILLISECONDS(40)

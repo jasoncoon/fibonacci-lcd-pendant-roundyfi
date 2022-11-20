@@ -1,13 +1,14 @@
 Arduino_ESP32RGBPanel *bus = new Arduino_ESP32RGBPanel(
     -1, -1, -1, EXAMPLE_PIN_NUM_DE, EXAMPLE_PIN_NUM_VSYNC, EXAMPLE_PIN_NUM_HSYNC, EXAMPLE_PIN_NUM_PCLK,
     EXAMPLE_PIN_NUM_DATA1, EXAMPLE_PIN_NUM_DATA2, EXAMPLE_PIN_NUM_DATA3, EXAMPLE_PIN_NUM_DATA4, EXAMPLE_PIN_NUM_DATA5,
-    EXAMPLE_PIN_NUM_DATA6, EXAMPLE_PIN_NUM_DATA7, EXAMPLE_PIN_NUM_DATA8, EXAMPLE_PIN_NUM_DATA9, EXAMPLE_PIN_NUM_DATA10, EXAMPLE_PIN_NUM_DATA11, 
+    EXAMPLE_PIN_NUM_DATA6, EXAMPLE_PIN_NUM_DATA7, EXAMPLE_PIN_NUM_DATA8, EXAMPLE_PIN_NUM_DATA9, EXAMPLE_PIN_NUM_DATA10, EXAMPLE_PIN_NUM_DATA11,
     EXAMPLE_PIN_NUM_DATA13, EXAMPLE_PIN_NUM_DATA14, EXAMPLE_PIN_NUM_DATA15, EXAMPLE_PIN_NUM_DATA16, EXAMPLE_PIN_NUM_DATA17);
 Arduino_GFX *gfx = new Arduino_ST7701_RGBPanel(bus, GFX_NOT_DEFINED, 0 /* rotation */, false /* IPS */, 480, 480,
                                                st7701_type2_init_operations, sizeof(st7701_type2_init_operations), true,
                                                50, 1, 30, 20, 1, 30);
 
-typedef struct {
+typedef struct
+{
   uint8_t cmd;
   uint8_t data[16];
   uint8_t databytes; // No of data in data; bit 7 = delay after set; 0xFF = end of cmds.
@@ -63,9 +64,11 @@ void tft_init(void);
 void lcd_cmd(const uint8_t cmd);
 void lcd_data(const uint8_t *data, int len);
 
-void lcd_send_data(uint8_t data) {
+void lcd_send_data(uint8_t data)
+{
   uint8_t n;
-  for (n = 0; n < 8; n++) {
+  for (n = 0; n < 8; n++)
+  {
     if (data & 0x80)
       xl.digitalWrite(LCD_SDA_PIN, 1);
     else
@@ -77,7 +80,8 @@ void lcd_send_data(uint8_t data) {
   }
 }
 
-void lcd_cmd(const uint8_t cmd) {
+void lcd_cmd(const uint8_t cmd)
+{
   xl.digitalWrite(LCD_CS_PIN, 0);
   xl.digitalWrite(LCD_SDA_PIN, 0);
   xl.digitalWrite(LCD_CLK_PIN, 0);
@@ -86,11 +90,13 @@ void lcd_cmd(const uint8_t cmd) {
   xl.digitalWrite(LCD_CS_PIN, 1);
 }
 
-void lcd_data(const uint8_t *data, int len) {
+void lcd_data(const uint8_t *data, int len)
+{
   uint32_t i = 0;
   if (len == 0)
     return; // no need to send anything
-  do {
+  do
+  {
     xl.digitalWrite(LCD_CS_PIN, 0);
     xl.digitalWrite(LCD_SDA_PIN, 1);
     xl.digitalWrite(LCD_CLK_PIN, 0);
@@ -101,7 +107,8 @@ void lcd_data(const uint8_t *data, int len) {
   } while (len--);
 }
 
-void tft_init(void) {
+void tft_init(void)
+{
   xl.digitalWrite(LCD_CS_PIN, 1);
   xl.digitalWrite(LCD_SDA_PIN, 1);
   xl.digitalWrite(LCD_CLK_PIN, 1);
@@ -114,18 +121,21 @@ void tft_init(void) {
   xl.digitalWrite(LCD_RST_PIN, 1);
   vTaskDelay(200 / portTICK_PERIOD_MS);
   int cmd = 0;
-  while (st_init_cmds[cmd].databytes != 0xff) {
+  while (st_init_cmds[cmd].databytes != 0xff)
+  {
     lcd_cmd(st_init_cmds[cmd].cmd);
     lcd_data(st_init_cmds[cmd].data, st_init_cmds[cmd].databytes & 0x1F);
-    if (st_init_cmds[cmd].databytes & 0x80) {
+    if (st_init_cmds[cmd].databytes & 0x80)
+    {
       vTaskDelay(100 / portTICK_PERIOD_MS);
     }
     cmd++;
   }
-  Serial.println("Register setup complete");
+  // Serial.println("Register setup complete");
 }
 
-void setupLcd() {
+void setupLcd()
+{
   Wire.begin(IIC_SDA_PIN, IIC_SCL_PIN, (uint32_t)800000);
   xl.begin();
   uint8_t pin = (1 << PWR_EN_PIN) | (1 << LCD_CS_PIN) | (1 << TP_RES_PIN) | (1 << LCD_SDA_PIN) | (1 << LCD_CLK_PIN) |

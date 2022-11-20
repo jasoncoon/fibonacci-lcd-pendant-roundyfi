@@ -17,7 +17,7 @@ void swirl()
   const float s = s_min + beatsin88(7 * speed) / (float)UINT16_MAX * (s_max - s_min);
   const float g = g_min + beatsin88(27 * speed) / (float)UINT16_MAX * (g_max - g_min);
 
-  CRGBPalette16 palette(gradientPalettes[1]); // es_rivendell_15_gp
+  CRGBPalette16 palette(palettes[1]); // es_rivendell_15_gp
 
   for (uint16_t i = 0; i < NUM_LEDS; i++)
   {
