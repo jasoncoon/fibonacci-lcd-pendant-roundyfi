@@ -259,125 +259,125 @@ DEFINE_GRADIENT_PALETTE(GMT_drywet_gp){
     212, 1, 1, 111,
     255, 1, 7, 33};
 
-// Gradient palette "ib15_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ing/general/tn/ib15.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 24 bytes of program space.
+// // Gradient palette "ib15_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ing/general/tn/ib15.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 24 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(ib15_gp){
-    0, 113, 91, 147,
-    72, 157, 88, 78,
-    89, 208, 85, 33,
-    107, 255, 29, 11,
-    141, 137, 31, 39,
-    255, 59, 33, 89};
+// DEFINE_GRADIENT_PALETTE(ib15_gp){
+//     0, 113, 91, 147,
+//     72, 157, 88, 78,
+//     89, 208, 85, 33,
+//     107, 255, 29, 11,
+//     141, 137, 31, 39,
+//     255, 59, 33, 89};
 
-// Gradient palette "Fuschia_7_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/fuschia/tn/Fuschia-7.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 20 bytes of program space.
+// // Gradient palette "Fuschia_7_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/ds/fuschia/tn/Fuschia-7.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 20 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(Fuschia_7_gp){
-    0, 43, 3, 153,
-    63, 100, 4, 103,
-    127, 188, 5, 66,
-    191, 161, 11, 115,
-    255, 135, 20, 182};
+// DEFINE_GRADIENT_PALETTE(Fuschia_7_gp){
+//     0, 43, 3, 153,
+//     63, 100, 4, 103,
+//     127, 188, 5, 66,
+//     191, 161, 11, 115,
+//     255, 135, 20, 182};
 
-// Gradient palette "es_emerald_dragon_08_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/es/emerald_dragon/tn/es_emerald_dragon_08.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 16 bytes of program space.
+// // Gradient palette "es_emerald_dragon_08_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/es/emerald_dragon/tn/es_emerald_dragon_08.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 16 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(es_emerald_dragon_08_gp){
-    0, 97, 255, 1,
-    101, 47, 133, 1,
-    178, 13, 43, 1,
-    255, 2, 10, 1};
+// DEFINE_GRADIENT_PALETTE(es_emerald_dragon_08_gp){
+//     0, 97, 255, 1,
+//     101, 47, 133, 1,
+//     178, 13, 43, 1,
+//     255, 2, 10, 1};
 
-// Gradient palette "lava_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/neota/elem/tn/lava.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 52 bytes of program space.
+// // Gradient palette "lava_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/neota/elem/tn/lava.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 52 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(lava_gp){
-    0, 0, 0, 0,
-    46, 18, 0, 0,
-    96, 113, 0, 0,
-    108, 142, 3, 1,
-    119, 175, 17, 1,
-    146, 213, 44, 2,
-    174, 255, 82, 4,
-    188, 255, 115, 4,
-    202, 255, 156, 4,
-    218, 255, 203, 4,
-    234, 255, 255, 4,
-    244, 255, 255, 71,
-    255, 255, 255, 255};
+// DEFINE_GRADIENT_PALETTE(lava_gp){
+//     0, 0, 0, 0,
+//     46, 18, 0, 0,
+//     96, 113, 0, 0,
+//     108, 142, 3, 1,
+//     119, 175, 17, 1,
+//     146, 213, 44, 2,
+//     174, 255, 82, 4,
+//     188, 255, 115, 4,
+//     202, 255, 156, 4,
+//     218, 255, 203, 4,
+//     234, 255, 255, 4,
+//     244, 255, 255, 71,
+//     255, 255, 255, 255};
 
-// Gradient palette "fire_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/neota/elem/tn/fire.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 28 bytes of program space.
+// // Gradient palette "fire_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/neota/elem/tn/fire.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 28 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(fire_gp){
-    0, 1, 1, 0,
-    76, 32, 5, 0,
-    146, 192, 24, 0,
-    197, 220, 105, 5,
-    240, 252, 255, 31,
-    250, 252, 255, 111,
-    255, 255, 255, 255};
+// DEFINE_GRADIENT_PALETTE(fire_gp){
+//     0, 1, 1, 0,
+//     76, 32, 5, 0,
+//     146, 192, 24, 0,
+//     197, 220, 105, 5,
+//     240, 252, 255, 31,
+//     250, 252, 255, 111,
+//     255, 255, 255, 255};
 
-// Gradient palette "Colorfull_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Colorfull.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 44 bytes of program space.
+// // Gradient palette "Colorfull_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Colorfull.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 44 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(Colorfull_gp){
-    0, 10, 85, 5,
-    25, 29, 109, 18,
-    60, 59, 138, 42,
-    93, 83, 99, 52,
-    106, 110, 66, 64,
-    109, 123, 49, 65,
-    113, 139, 35, 66,
-    116, 192, 117, 98,
-    124, 255, 255, 137,
-    168, 100, 180, 155,
-    255, 22, 121, 174};
+// DEFINE_GRADIENT_PALETTE(Colorfull_gp){
+//     0, 10, 85, 5,
+//     25, 29, 109, 18,
+//     60, 59, 138, 42,
+//     93, 83, 99, 52,
+//     106, 110, 66, 64,
+//     109, 123, 49, 65,
+//     113, 139, 35, 66,
+//     116, 192, 117, 98,
+//     124, 255, 255, 137,
+//     168, 100, 180, 155,
+//     255, 22, 121, 174};
 
-// Gradient palette "Magenta_Evening_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Magenta_Evening.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 28 bytes of program space.
+// // Gradient palette "Magenta_Evening_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Magenta_Evening.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 28 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(Magenta_Evening_gp){
-    0, 71, 27, 39,
-    31, 130, 11, 51,
-    63, 213, 2, 64,
-    70, 232, 1, 66,
-    76, 252, 1, 69,
-    108, 123, 2, 51,
-    255, 46, 9, 35};
+// DEFINE_GRADIENT_PALETTE(Magenta_Evening_gp){
+//     0, 71, 27, 39,
+//     31, 130, 11, 51,
+//     63, 213, 2, 64,
+//     70, 232, 1, 66,
+//     76, 252, 1, 69,
+//     108, 123, 2, 51,
+//     255, 46, 9, 35};
 
-// Gradient palette "Pink_Purple_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Pink_Purple.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 44 bytes of program space.
+// // Gradient palette "Pink_Purple_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Pink_Purple.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 44 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(Pink_Purple_gp){
-    0, 19, 2, 39,
-    25, 26, 4, 45,
-    51, 33, 6, 52,
-    76, 68, 62, 125,
-    102, 118, 187, 240,
-    109, 163, 215, 247,
-    114, 217, 244, 255,
-    122, 159, 149, 221,
-    149, 113, 78, 188,
-    183, 128, 57, 155,
-    255, 146, 40, 123};
+// DEFINE_GRADIENT_PALETTE(Pink_Purple_gp){
+//     0, 19, 2, 39,
+//     25, 26, 4, 45,
+//     51, 33, 6, 52,
+//     76, 68, 62, 125,
+//     102, 118, 187, 240,
+//     109, 163, 215, 247,
+//     114, 217, 244, 255,
+//     122, 159, 149, 221,
+//     149, 113, 78, 188,
+//     183, 128, 57, 155,
+//     255, 146, 40, 123};
 
 // Gradient palette "Sunset_Real_gp", originally from
 // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Sunset_Real.png.index.html
@@ -393,77 +393,77 @@ DEFINE_GRADIENT_PALETTE(Sunset_Real_gp){
     198, 16, 0, 130,
     255, 0, 0, 160};
 
-// Gradient palette "es_autumn_19_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/es/autumn/tn/es_autumn_19.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 52 bytes of program space.
+// // Gradient palette "es_autumn_19_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/es/autumn/tn/es_autumn_19.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 52 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(es_autumn_19_gp){
-    0, 26, 1, 1,
-    51, 67, 4, 1,
-    84, 118, 14, 1,
-    104, 137, 152, 52,
-    112, 113, 65, 1,
-    122, 133, 149, 59,
-    124, 137, 152, 52,
-    135, 113, 65, 1,
-    142, 139, 154, 46,
-    163, 113, 13, 1,
-    204, 55, 3, 1,
-    249, 17, 1, 1,
-    255, 17, 1, 1};
+// DEFINE_GRADIENT_PALETTE(es_autumn_19_gp){
+//     0, 26, 1, 1,
+//     51, 67, 4, 1,
+//     84, 118, 14, 1,
+//     104, 137, 152, 52,
+//     112, 113, 65, 1,
+//     122, 133, 149, 59,
+//     124, 137, 152, 52,
+//     135, 113, 65, 1,
+//     142, 139, 154, 46,
+//     163, 113, 13, 1,
+//     204, 55, 3, 1,
+//     249, 17, 1, 1,
+//     255, 17, 1, 1};
 
-// Gradient palette "BlacK_Blue_Magenta_White_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/BlacK_Blue_Magenta_White.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 28 bytes of program space.
+// // Gradient palette "BlacK_Blue_Magenta_White_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/BlacK_Blue_Magenta_White.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 28 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(BlacK_Blue_Magenta_White_gp){
-    0, 0, 0, 0,
-    42, 0, 0, 45,
-    84, 0, 0, 255,
-    127, 42, 0, 255,
-    170, 255, 0, 255,
-    212, 255, 55, 255,
-    255, 255, 255, 255};
+// DEFINE_GRADIENT_PALETTE(BlacK_Blue_Magenta_White_gp){
+//     0, 0, 0, 0,
+//     42, 0, 0, 45,
+//     84, 0, 0, 255,
+//     127, 42, 0, 255,
+//     170, 255, 0, 255,
+//     212, 255, 55, 255,
+//     255, 255, 255, 255};
 
-// Gradient palette "BlacK_Magenta_Red_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/BlacK_Magenta_Red.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 20 bytes of program space.
+// // Gradient palette "BlacK_Magenta_Red_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/BlacK_Magenta_Red.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 20 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(BlacK_Magenta_Red_gp){
-    0, 0, 0, 0,
-    63, 42, 0, 45,
-    127, 255, 0, 255,
-    191, 255, 0, 45,
-    255, 255, 0, 0};
+// DEFINE_GRADIENT_PALETTE(BlacK_Magenta_Red_gp){
+//     0, 0, 0, 0,
+//     63, 42, 0, 45,
+//     127, 255, 0, 255,
+//     191, 255, 0, 45,
+//     255, 255, 0, 0};
 
-// Gradient palette "BlacK_Red_Magenta_Yellow_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/BlacK_Red_Magenta_Yellow.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 28 bytes of program space.
+// // Gradient palette "BlacK_Red_Magenta_Yellow_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/BlacK_Red_Magenta_Yellow.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 28 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(BlacK_Red_Magenta_Yellow_gp){
-    0, 0, 0, 0,
-    42, 42, 0, 0,
-    84, 255, 0, 0,
-    127, 255, 0, 45,
-    170, 255, 0, 255,
-    212, 255, 55, 45,
-    255, 255, 255, 0};
+// DEFINE_GRADIENT_PALETTE(BlacK_Red_Magenta_Yellow_gp){
+//     0, 0, 0, 0,
+//     42, 42, 0, 0,
+//     84, 255, 0, 0,
+//     127, 255, 0, 45,
+//     170, 255, 0, 255,
+//     212, 255, 55, 45,
+//     255, 255, 255, 0};
 
-// Gradient palette "Blue_Cyan_Yellow_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Blue_Cyan_Yellow.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 20 bytes of program space.
+// // Gradient palette "Blue_Cyan_Yellow_gp", originally from
+// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/basic/tn/Blue_Cyan_Yellow.png.index.html
+// // converted for FastLED with gammas (2.6, 2.2, 2.5)
+// // Size: 20 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(Blue_Cyan_Yellow_gp){
-    0, 0, 0, 255,
-    63, 0, 55, 255,
-    127, 0, 255, 255,
-    191, 42, 255, 45,
-    255, 255, 255, 0};
+// DEFINE_GRADIENT_PALETTE(Blue_Cyan_Yellow_gp){
+//     0, 0, 0, 255,
+//     63, 0, 55, 255,
+//     127, 0, 255, 255,
+//     191, 42, 255, 45,
+//     255, 255, 255, 0};
 
 // Single array of defined cpt-city color palettes.
 // This will let us programmatically choose one based on
@@ -496,18 +496,19 @@ const TProgmemRGBGradientPalettePtr palettes[] = {
     GMT_drywet_gp,
     ib_jul01_gp,
     es_vintage_57_gp,
-    ib15_gp,
-    Fuschia_7_gp,
-    es_emerald_dragon_08_gp,
-    fire_gp,
-    Colorfull_gp,
-    Magenta_Evening_gp,
-    Pink_Purple_gp,
-    es_autumn_19_gp,
-    BlacK_Blue_Magenta_White_gp,
-    BlacK_Magenta_Red_gp,
-    BlacK_Red_Magenta_Yellow_gp,
-    Blue_Cyan_Yellow_gp};
+    // ib15_gp,
+    // Fuschia_7_gp,
+    // es_emerald_dragon_08_gp,
+    // fire_gp,
+    // Colorfull_gp,
+    // Magenta_Evening_gp,
+    // Pink_Purple_gp,
+    // es_autumn_19_gp,
+    // BlacK_Blue_Magenta_White_gp,
+    // BlacK_Magenta_Red_gp,
+    // BlacK_Red_Magenta_Yellow_gp,
+    // Blue_Cyan_Yellow_gp
+};
 
 // Count of how many cpt-city gradients are defined:
 const uint8_t paletteCount = ARRAY_SIZE(palettes);
@@ -535,19 +536,19 @@ const String paletteNames[paletteCount] = {
     "GMT drywet",
     "ib jul01",
     "es vintage 57",
-    "ib15",
-    "Fuschia-7",
-    "es emerald dragon 08",
-    "fire",
-    "Colorfull",
-    "Magenta Evening",
-    "Pink Purple",
-    "es autumn 19",
-    "Black Blue Magenta White",
-    "Black Magenta Red",
-    "Black Red Magenta Yellow",
-    "Blue Cyan Yellow",
+    // "ib15",
+    // "Fuschia-7",
+    // "es emerald dragon 08",
+    // "fire",
+    // "Colorfull",
+    // "Magenta Evening",
+    // "Pink Purple",
+    // "es autumn 19",
+    // "Black Blue Magenta White",
+    // "Black Magenta Red",
+    // "Black Red Magenta Yellow",
+    // "Blue Cyan Yellow",
 };
 
-CRGBPalette16 currentPalette(CRGB::Black);
+CRGBPalette16 currentPalette(palettes[0]);
 CRGBPalette16 targetPalette(palettes[0]);

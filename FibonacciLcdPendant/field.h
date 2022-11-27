@@ -162,11 +162,7 @@ void loadFieldsFromEEPROM(FieldList fields, uint8_t count)
     }
   }
 
-  if (!EEPROM.begin(count))
-  {
-    // Serial.println("Failed to initialize EEPROM!");
-    return;
-  }
+  EEPROM.begin(count);
 
   if (EEPROM.read(0) == 255)
   {

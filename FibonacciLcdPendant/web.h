@@ -77,7 +77,7 @@ void setupWeb()
     // Serial.println("Wi-Fi manager portal running");
   }
 
-  webServer.enableCORS();
+  webServer.enableCORS(true);
 
   webServer.on("/all", HTTP_GET, []()
                {
@@ -104,7 +104,7 @@ void setupWeb()
   webServer.serveStatic("/js/app.js", SPIFFS, "/js/app.js", "max-age=86400");
   webServer.serveStatic("/images/atom196.png", SPIFFS, "/images/atom196.png", "max-age=86400");
 
-  MDNS.begin("fibonacciLcdPendant");
+  MDNS.begin("fibonacci-lcd-pendant");
 
   httpUpdateServer.setup(&webServer);
   webServer.begin();
