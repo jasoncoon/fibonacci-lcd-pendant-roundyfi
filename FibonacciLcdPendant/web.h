@@ -122,22 +122,9 @@ void handleWeb()
   {
     if (!webServerStarted)
     {
-      // Serial.println();
-      // Serial.println("WiFi connected");
-      // Serial.print("IP address: ");
-      // Serial.println(WiFi.localIP());
       webServerStarted = true;
       setupWeb();
     }
     webServer.handleClient();
-  }
-  else
-  {
-    static uint8_t ledState = 0;
-    EVERY_N_MILLIS(125)
-    {
-      ledState = ledState == 0 ? 1 : 0;
-      // Serial.print(".");
-    }
   }
 }

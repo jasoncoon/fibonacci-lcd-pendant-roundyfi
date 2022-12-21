@@ -31,6 +31,7 @@ const uint16_t height = 240;
 
 const uint16_t NUM_LEDS = 128;
 const uint16_t ledRadius = 4;
+const uint16_t ledWidth = ledRadius * 2;
 
 CRGB leds[NUM_LEDS];
 
@@ -51,7 +52,7 @@ uint8_t brightness = 8;
 
 uint8_t speed = 30;
 
-uint8_t cyclePalettes = 0;
+uint8_t cyclePalettes = 1;
 uint8_t paletteDuration = 10;
 uint8_t currentPaletteIndex = 0;
 unsigned long paletteTimeout = 0;
@@ -224,6 +225,7 @@ void setupCoords()
 void loop()
 {
   unsigned long start = millis();
+
   handleWeb();
 
   if (cyclePalettes == 1 && (millis() > paletteTimeout))
@@ -261,13 +263,13 @@ void loop()
 
     uint16_t c = gfx->color565(r, g, b);
 
-    gfx->fillCircle(x, y, ledRadius, c);
+    gfx->fillRect(x, y, ledWidth, ledWidth, c);
   }
 
   unsigned long elapsed = millis() - start;
 
   EVERY_N_SECONDS(1)
   {
-    Serial.println(elapsed);
+    Serial.println(1000 / elapsed);
   }
 }

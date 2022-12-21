@@ -17,7 +17,8 @@ static int noisespeedz = 0;
 // of 1 will be so zoomed in, you'll mostly see solid colors.
 static uint16_t noisescale = 1; // scale is set dynamically once we've started up
 
-uint8_t noise[256][256];
+// not enough RAM for this? :(
+// uint8_t noise[256][256];
 
 // There are several different palettes of colors demonstrated here.
 //
@@ -46,14 +47,15 @@ CRGB noiseXYZ(CRGBPalette16 palette, int x, int y, int z, uint16_t i)
     dataSmoothing = 200 - (speed * 4);
   }
 
-  if (dataSmoothing)
-  {
-    uint8_t olddata = noise[j][k];
-    uint8_t newdata = scale8(olddata, dataSmoothing) + scale8(data, 256 - dataSmoothing);
-    data = newdata;
-  }
+  // not enough RAM for this? :(
+  // if (dataSmoothing)
+  // {
+  //   uint8_t olddata = noise[j][k];
+  //   uint8_t newdata = scale8(olddata, dataSmoothing) + scale8(data, 256 - dataSmoothing);
+  //   data = newdata;
+  // }
 
-  noise[j][k] = data;
+  // noise[j][k] = data;
 
   return ColorFromPalette(palette, data, 255, LINEARBLEND);
 }

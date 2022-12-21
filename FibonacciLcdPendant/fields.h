@@ -22,29 +22,29 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-String getPower()
-{
-  return String(power);
-}
+// String getPower()
+// {
+//   return String(power);
+// }
 
-String setPower(String value)
-{
-  power = value.toInt();
-  power = power == 0 ? 0 : 1;
-  return String(power);
-}
+// String setPower(String value)
+// {
+//   power = value.toInt();
+//   power = power == 0 ? 0 : 1;
+//   return String(power);
+// }
 
-String getBrightness()
-{
-  return String(brightness);
-}
+// String getBrightness()
+// {
+//   return String(brightness);
+// }
 
-String setBrightness(String value)
-{
-  brightness = value.toInt();
-  FastLED.setBrightness(brightness);
-  return String(brightness);
-}
+// String setBrightness(String value)
+// {
+//   brightness = value.toInt();
+//   FastLED.setBrightness(brightness);
+//   return String(brightness);
+// }
 
 String getPattern()
 {
@@ -201,8 +201,8 @@ String setPaletteDuration(String value)
 
 FieldList fields = {
     // name                 label                type               min,          max,  getValue,            getOptions,   setValue
-    {"power", "Power", BooleanFieldType, 0, 1, getPower, NULL, setPower},
-    {"brightness", "Brightness", NumberFieldType, 1, 255, getBrightness, NULL, setBrightness},
+    // {"power", "Power", BooleanFieldType, 0, 1, getPower, NULL, setPower},
+    // {"brightness", "Brightness", NumberFieldType, 1, 255, getBrightness, NULL, setBrightness},
     // { "speed",              "Speed",             NumberFieldType,     1,          255,  getSpeed,            NULL,         setSpeed            },
 
     {"patternSection", "Pattern", SectionFieldType, 0, 0, NULL, NULL, NULL},

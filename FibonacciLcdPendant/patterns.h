@@ -31,10 +31,10 @@ void antialiasPixelAR(uint8_t angle, uint8_t dAngle, uint8_t startRadius, uint8_
 #include "colorWaves.h"
 #include "emitter.h"
 #include "fire.h"
-// #include "noise.h"
+#include "noise.h"
 #include "pride.h"
 #include "stars.h"
-// #include "swirl.h"
+#include "swirl.h"
 #include "water.h"
 
 typedef void (*Pattern)();
@@ -50,8 +50,8 @@ PatternAndNameList patterns = {
     {colorWaves, "Color Waves"},
     {pride, "Pride"},
 
-    // {paletteNoise, "Noise"},
-    // {polarNoise, "Polar Noise"},
+    {paletteNoise, "Noise"},
+    {polarNoise, "Polar Noise"},
 
     {fire, "Fire"},
     {water, "Water"},
@@ -62,7 +62,7 @@ PatternAndNameList patterns = {
     {stars, "Stars"},
     {emitter, "Emitter"},
 
-    // {swirl, "Swirl"},
+    {swirl, "Swirl"},
 };
 
 const uint8_t patternCount = ARRAY_SIZE(patterns);

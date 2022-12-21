@@ -315,19 +315,19 @@ DEFINE_GRADIENT_PALETTE(GMT_drywet_gp){
 //     244, 255, 255, 71,
 //     255, 255, 255, 255};
 
-// // Gradient palette "fire_gp", originally from
-// // http://soliton.vm.bytemark.co.uk/pub/cpt-city/neota/elem/tn/fire.png.index.html
-// // converted for FastLED with gammas (2.6, 2.2, 2.5)
-// // Size: 28 bytes of program space.
+// Gradient palette "fire_gp", originally from
+// http://soliton.vm.bytemark.co.uk/pub/cpt-city/neota/elem/tn/fire.png.index.html
+// converted for FastLED with gammas (2.6, 2.2, 2.5)
+// Size: 28 bytes of program space.
 
-// DEFINE_GRADIENT_PALETTE(fire_gp){
-//     0, 1, 1, 0,
-//     76, 32, 5, 0,
-//     146, 192, 24, 0,
-//     197, 220, 105, 5,
-//     240, 252, 255, 31,
-//     250, 252, 255, 111,
-//     255, 255, 255, 255};
+DEFINE_GRADIENT_PALETTE(fire_gp){
+    0, 1, 1, 0,
+    76, 32, 5, 0,
+    146, 192, 24, 0,
+    197, 220, 105, 5,
+    240, 252, 255, 31,
+    250, 252, 255, 111,
+    255, 255, 255, 255};
 
 // // Gradient palette "Colorfull_gp", originally from
 // // http://soliton.vm.bytemark.co.uk/pub/cpt-city/nd/atmospheric/tn/Colorfull.png.index.html
@@ -465,6 +465,10 @@ DEFINE_GRADIENT_PALETTE(Sunset_Real_gp){
 //     191, 42, 255, 45,
 //     255, 255, 255, 0};
 
+DEFINE_GRADIENT_PALETTE(BlackToRed_gp){
+    0, 0, 0, 0,
+    255, 255, 0, 0};
+
 // Single array of defined cpt-city color palettes.
 // This will let us programmatically choose one based on
 // a number, rather than having to activate each explicitly
@@ -499,7 +503,7 @@ const TProgmemRGBGradientPalettePtr palettes[] = {
     // ib15_gp,
     // Fuschia_7_gp,
     // es_emerald_dragon_08_gp,
-    // fire_gp,
+    fire_gp,
     // Colorfull_gp,
     // Magenta_Evening_gp,
     // Pink_Purple_gp,
@@ -507,8 +511,8 @@ const TProgmemRGBGradientPalettePtr palettes[] = {
     // BlacK_Blue_Magenta_White_gp,
     // BlacK_Magenta_Red_gp,
     // BlacK_Red_Magenta_Yellow_gp,
-    // Blue_Cyan_Yellow_gp
-};
+    // Blue_Cyan_Yellow_gp,
+    BlackToRed_gp};
 
 // Count of how many cpt-city gradients are defined:
 const uint8_t paletteCount = ARRAY_SIZE(palettes);
@@ -539,7 +543,7 @@ const String paletteNames[paletteCount] = {
     // "ib15",
     // "Fuschia-7",
     // "es emerald dragon 08",
-    // "fire",
+    "fire",
     // "Colorfull",
     // "Magenta Evening",
     // "Pink Purple",
@@ -547,7 +551,8 @@ const String paletteNames[paletteCount] = {
     // "Black Blue Magenta White",
     // "Black Magenta Red",
     // "Black Red Magenta Yellow",
-    // "Blue Cyan Yellow",
+    // "Blue Cyan Yellow",,
+    "Black to Red",
 };
 
 CRGBPalette16 currentPalette(palettes[0]);

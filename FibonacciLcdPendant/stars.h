@@ -15,9 +15,7 @@ void starsWithOffset(uint16_t stars[], uint8_t starCount, uint8_t offset = 21, b
     uint16_t index = stars[i];
 
     // draw the star
-    CRGB newcolor = ColorFromPalette(currentPalette, (stars[i] / hues) + gHue); // i * (240 / starCount)
-
-    nblend(leds[index], newcolor, 64);
+    leds[index] = ColorFromPalette(currentPalette, stars[i] - gHue);
   }
 
   // move the stars
@@ -30,7 +28,7 @@ void starsWithOffset(uint16_t stars[], uint8_t starCount, uint8_t offset = 21, b
   }
 }
 
-const uint8_t starCount = 16;
+const uint8_t starCount = 2;
 
 void stars13(bool setup = false, bool move = false)
 {
